@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div id="display"></div>
+    </div>
+    <script type="text/javascript">
+      function getComputerChoice() {
+        let randNum = Math.floor(Math.random() * 3);
+        // console.log(randNum);
+        if (randNum == 0) return "scissors";
+        else if (randNum == 1) {
+          return "paper";
+        } else if (randNum == 2) {
+          return "rock";
+        }
+      }
+
+      function convertSelectionsToLowerCase(
+        playerSelection,
+        computerSelection
+      ) {
+        let caseInsensitivePlayerSelection = playerSelection.toLowerCase();
+        let caseInsensitiveComputerSelection = computerSelection.toLowerCase();
+        return playRoundOf(
+          caseInsensitivePlayerSelection,
+          caseInsensitiveComputerSelection
+        );
+      }
+
+      function playRoundOf(
+        caseInsensitivePlayerSelection,
+        caseInsensitiveComputerSelection
+      ) {
+        if (
+          (caseInsensitivePlayerSelection == "rock" &&
+            caseInsensitiveComputerSelection == "paper") ||
+          (caseInsensitivePlayerSelection == "paper" &&
+            caseInsensitiveComputerSelection == "scissors") ||
+          (caseInsensitivePlayerSelection == "scissors" &&
+            caseInsensitiveComputerSelection == "rock")
+        ) {
+          return {
+            score: 0,
+            text:
+              "You Lose! " +
+              caseInsensitiveComputerSelection +
+              " beats " +
+              caseInsensitivePlayerSelection,
+          };
+        } else if (
+          caseInsensitivePlayerSelection == caseInsensitiveComputerSelection
+        ) {
+          return { score: 0, text: "Draw!" };
+        } else {
+          return {
+            score: 1,
+            text:
+              "You win! " +
+              caseInsensitivePlayerSelection +
+              " beats " +
+              caseInsensitiveComputerSelection,
+          };
+        }
+      }
+
+      function playGame() {
+        let playerScore = 0;
+        //will play 5 rounds of the game and determine who wins
+        for (let x = 0; x < 5; x++) {
+          let userInput = prompt("Enter in 'rock', 'paper' or 'scissors'");
+          let result = convertSelectionsToLowerCase(
+            userInput,
+            getComputerChoice()
+          );
+          //a draw and loss leads to no score added, and a win leads to 1 score added to the player
+          if (result.score == 1) {
+            playerScore++;
+          }
+
+          console.log(result.text);
+        }
+
+        //assume that a best of 5 will occur,
+        if (playerScore >= 3) {
+          console.log("you win!");
+          displayOnDOM("You win!");
+        } else {
+          console.log("you lose :(");
+          displayOnDOM("You lose :(");
+        }
+      }
+
+      function displayOnDOM(resultText) {
+        const container = document.querySelector("#display");
+        const parentDiv = document.createElement("div");
+        parentDiv.classList.add("parentDiv");
+        parentDiv.style.display = "flex";
+        parentDiv.style.justifyContent = "center";
+        parentDiv.style.alignItems = "center";
+        parentDiv.style.backgroundColor = "#777777";
+        parentDiv.style.height = "100%";
+        const div = document.createElement("div");
+        div.style.color = "black";
+        div.style.fontWeight = "bold";
+        div.textContent = resultText;
+        div.style.height = "100%";
+        parentDiv.appendChild(div);
+        container.appendChild(parentDiv);
+      }
+
+      playGame();
+    </script>
+
+    <div class="container">
+      <div id="display"></div>
+    </div>
+  </body>
+</html>
